@@ -2,53 +2,14 @@
 
 body {
     margin: 0;
-    background-color: rgb(238, 223, 184);
+    background-color: white;
     font-family: 'Arial', sans-serif; 
     color: black;
 }
 
 header {
     display: flex; 
-    justify-content: center; /* Center header content */
+    justify-content: center; 
     align-items: center; 
-    color: white;
-    background-color: rgba(53, 47, 22, 0.7);
     flex-direction: column;
-} 
-
-#content {
-    display: flex; 
-    flex-direction: column;
-    align-items: center; 
-    text-align: center;
-}
-
-.menu {
-    text-align: left; 
-    background-color: rgba(255, 255, 255, 0.8); 
-    border-radius: 8px; 
-    padding: 30px;
-}
-
-
-nav button {
-    background-color: white; 
-    color: #4a2c2a; 
-    border: 1px solid #747373;
-    border-radius: 5px;
-    padding: 10px 20px; 
-    margin: 5px; 
-    cursor: pointer; 
-    font-size: 1em;
-    font-weight: bold;
-    transition: background-color 0.3s, transform 0.3s; 
-}
-
-nav button:hover {
-    background-color: #ddb347; 
-    transform: scale(1.05); /* Slightly grow the button */
-}
-
-nav button:active {
-    transform: scale(0.95); /* Slightly shrink the button on click */
 }
