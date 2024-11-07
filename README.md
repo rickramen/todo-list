@@ -1,3 +1,3 @@
-# restaurant-page
+# todo-list
 
-https://rickramen.github.io/restaurant-page/
+
