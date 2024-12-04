@@ -3,6 +3,11 @@ const modal = document.getElementById('task-modal');
 const closeModalButton = document.getElementById('close-modal-btn'); 
 
 
+
+//===============================================
+// Event listeners
+//===============================================
+
 // Show the modal
 addTodoButton.addEventListener('click', () => {
   modal.style.display = 'block'; 
