@@ -1,3 +1,5 @@
-import { test } from "./modules/test.js";
+/* index.js */
 
-console.log(test);
+import './modules/modal'; 
+
+
