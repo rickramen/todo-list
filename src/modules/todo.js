@@ -20,7 +20,7 @@ export default class Todo {
     toggleComplete() {
       this.completed = !this.completed;
     }
-  
+
     isOverdue() {
         const today = new Date();
         return !this.completed && isBefore(this.dueDate, today);

@@ -6,6 +6,7 @@ const taskForm = document.getElementById('task-form');
 const taskList = document.getElementById('task-list');
 const modal = document.getElementById('task-modal');
 
+const tasks = [];
 
 // Function to add task to the UI
 function addTaskToDOM(task) {
@@ -25,14 +26,21 @@ function addTaskToDOM(task) {
   const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
   deleteButton.addEventListener('click', () => {
-    taskItem.remove(); // Remove task from the UI
+    taskItem.remove(); 
+    removeTaskFromArray(task); 
   });
   
   taskItem.appendChild(deleteButton);
   taskList.appendChild(taskItem);
 }
 
-
+// Remove task from the tasks array
+function removeTaskFromArray(task) {
+    const index = tasks.indexOf(task);
+    if (index > -1) {
+      tasks.splice(index, 1);  
+    }
+  }
 
 // Add event listener for form submission
 taskForm.addEventListener('submit', (event) => {
@@ -45,6 +53,7 @@ taskForm.addEventListener('submit', (event) => {
   
     // Create and add task
     const newTask = new Todo(title, description, dueDate, priority);
+    tasks.push(newTask);
     addTaskToDOM(newTask);
   
     // Close the modal and reset the form
