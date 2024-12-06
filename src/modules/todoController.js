@@ -8,7 +8,29 @@ const modal = document.getElementById('task-modal');
 
 const tasks = [];
 
-// Function to add task to the UI
+
+function saveTasksToLocalStorage() {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadTasksFromLocalStorage() {
+  const storedTasks = localStorage.getItem('tasks');
+  if (storedTasks) {
+    const parsedTasks = JSON.parse(storedTasks);
+    parsedTasks.forEach(taskData => {
+      const task = new Todo(
+        taskData.title,
+        taskData.description,
+        taskData.dueDate,
+        taskData.priority
+      );
+      tasks.push(task);
+      addTaskToDOM(task);
+    });
+  }
+}
+
+// Add task to the UI
 function addTaskToDOM(task) {
   const taskItem = document.createElement('li');
   taskItem.classList.add('task-item');
@@ -22,7 +44,7 @@ function addTaskToDOM(task) {
     </div>
   `;
 
-  // Add Delete button to tasks
+  // Add delete button to tasks
   const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
   deleteButton.addEventListener('click', () => {
@@ -34,13 +56,14 @@ function addTaskToDOM(task) {
   taskList.appendChild(taskItem);
 }
 
-// Remove task from the tasks array
+// Remove task from the array
 function removeTaskFromArray(task) {
     const index = tasks.indexOf(task);
     if (index > -1) {
       tasks.splice(index, 1);  
+      saveTasksToLocalStorage();
     }
-  }
+}
 
 // Add event listener for form submission
 taskForm.addEventListener('submit', (event) => {
@@ -55,9 +78,12 @@ taskForm.addEventListener('submit', (event) => {
     const newTask = new Todo(title, description, dueDate, priority);
     tasks.push(newTask);
     addTaskToDOM(newTask);
+    saveTasksToLocalStorage();
   
     // Close the modal and reset the form
     modal.style.display = 'none';
     taskForm.reset();
-  });
+});
   
+// Initialize with local data
+loadTasksFromLocalStorage();
