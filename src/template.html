@@ -10,8 +10,20 @@
 
     <header>
         <h1>Todo List</h1>
-        <button id="add-todo-btn">Create Task</button>
     </header>
+
+    <div id="project-sidebar"></div>
+    <form id="create-project-form">
+        <input type="text" id="project-name" placeholder="New project name" required>
+        <button type="submit">Create Project</button>
+    </form>
+
+    <div id="main-content">
+        <h2 id="current-project-name"></h2>
+        <button type="button" id="add-todo-btn" style="display: none;">Create Task</button>
+        <button type="button" id="delete-project-btn" style="display: none;">Delete Project</button>
+        <ul id="task-list"></ul>
+    </div>
 
     <div id="task-modal">
         <h2>Create a task</h2>
@@ -36,12 +48,10 @@
             <button type="button" id="close-modal-btn">Close</button>
         </form>
     </div>
-
-    <ul id="task-list"></ul>
     
     <footer>
         <a href="https://github.com/rickramen/todo-list" target="_blank">
-            <img src="./assets/github-mark.png" alt="GitHub Logo" style="width: 25px; height: 25px;"/>
+            <img src="./assets/github-mark.png" alt="GitHub Logo"/>
         </a>
         <a href="https://github.com/rickramen/todo-list" target="_blank">
             <p>rickramen</p>

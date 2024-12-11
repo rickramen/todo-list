@@ -3,7 +3,6 @@ const modal = document.getElementById('task-modal');
 const closeModalButton = document.getElementById('close-modal-btn'); 
 
 
-
 //===============================================
 // Event listeners
 //===============================================

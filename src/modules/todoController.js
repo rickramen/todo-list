@@ -1,33 +1,113 @@
 // todoController.js
 
 import Todo from './todo';
+import Project from './project';
 
 const taskForm = document.getElementById('task-form');
 const taskList = document.getElementById('task-list');
 const modal = document.getElementById('task-modal');
+const projectSidebar = document.getElementById('project-sidebar');
+const currentProjectName = document.getElementById('current-project-name');
+const addTodoButton = document.getElementById('add-todo-btn');
 
-const tasks = [];
+let projects = [];
+let currentProject = null; 
 
 
-function saveTasksToLocalStorage() {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+function saveProjectsToLocalStorage() {
+  localStorage.setItem('projects', JSON.stringify(projects));
 }
 
-function loadTasksFromLocalStorage() {
-  const storedTasks = localStorage.getItem('tasks');
-  if (storedTasks) {
-    const parsedTasks = JSON.parse(storedTasks);
-    parsedTasks.forEach(taskData => {
-      const task = new Todo(
-        taskData.title,
-        taskData.description,
-        taskData.dueDate,
-        taskData.priority
-      );
-      tasks.push(task);
-      addTaskToDOM(task);
+function loadProjectsFromLocalStorage() {
+  const storedProjects = localStorage.getItem('projects');
+  if (storedProjects) {
+    const parsedProjects = JSON.parse(storedProjects);
+    parsedProjects.forEach(projectData => {
+      const project = new Project(projectData.name);
+      projectData.tasks.forEach(taskData => {
+        const task = new Todo(
+          taskData.title,
+          taskData.description,
+          taskData.dueDate,
+          taskData.priority,
+        );
+        project.addTask(task);
+      });
+      projects.push(project);
     });
+  } else {
+    // Create a default project if no local storage exists
+    const defaultProject = new Project('Default');
+    projects.push(defaultProject);
   }
+  updateProjectSidebar(); 
+}
+
+function updateProjectSidebar() {
+  projectSidebar.innerHTML = '';
+  projects.forEach(project => {
+    const projectButton = document.createElement('button');
+    projectButton.classList.add('project-button');
+    projectButton.textContent = project.name;
+
+    projectButton.addEventListener('click', () => {
+      currentProject = project;  
+      loadTasksForProject(project);  
+    });
+    projectSidebar.appendChild(projectButton);
+
+    // Add delete button for each project
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('delete-project-button');
+    deleteButton.addEventListener('click', (event) => {
+      event.stopPropagation(); 
+      deleteProject(project);  
+    });
+    projectSidebar.appendChild(deleteButton);
+  });
+
+  // Assign the first project as the current
+  if (projects.length > 0) {
+    currentProject = projects[0];
+    loadTasksForProject(currentProject);
+    updateMainContent(currentProject);
+    showCreateTaskButton(true);  
+  } else {
+    showCreateTaskButton(false);
+  }
+}
+
+function updateMainContent(project) {
+  currentProjectName.textContent = project.name;
+}
+
+function showCreateTaskButton(show) {
+  if (show) {
+    addTodoButton.style.display = 'block';
+  } else {
+    addTodoButton.style.display = 'none';
+  }
+}
+
+function deleteProject(projectToDelete) {
+  projects = projects.filter(project => project !== projectToDelete);
+  
+  if (currentProject === projectToDelete) {
+    // If there are no projects left, set currentProject to null
+    currentProject = projects[0] || null; 
+    
+    if (currentProject) {
+      loadTasksForProject(currentProject); 
+      updateMainContent(currentProject);  
+    } else {
+      taskList.innerHTML = '';  
+      currentProjectName.textContent = '';  
+    }
+  }
+
+  saveProjectsToLocalStorage();
+  updateProjectSidebar();
 }
 
 // Add task to the UI
@@ -47,27 +127,56 @@ function addTaskToDOM(task) {
   // Add delete button to tasks
   const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
+  deleteButton.type = 'button';
   deleteButton.addEventListener('click', () => {
     taskItem.remove(); 
-    removeTaskFromArray(task); 
+    removeTaskFromProject(task); 
   });
   
   taskItem.appendChild(deleteButton);
   taskList.appendChild(taskItem);
 }
 
-// Remove task from the array
-function removeTaskFromArray(task) {
-    const index = tasks.indexOf(task);
-    if (index > -1) {
-      tasks.splice(index, 1);  
-      saveTasksToLocalStorage();
-    }
+// Add task to the selected project
+function addTaskToProject(task) {
+  if (currentProject) {
+    currentProject.addTask(task);
+    saveProjectsToLocalStorage();
+    loadTasksForProject(currentProject);  // Refresh the task list
+  }
 }
 
-// Add event listener for form submission
+function loadTasksForProject(project) {
+  taskList.innerHTML = '';
+  project.getTasks().forEach(task => {
+    addTaskToDOM(task); 
+  });
+}
+
+
+// Remove task from the selected project
+function removeTaskFromProject(task) {
+  const project = projects.find(p => p.name === task.project);
+  if (project) {
+    project.removeTask(task);
+    saveProjectsToLocalStorage(); 
+  }
+}
+
+// Handle form submission for creating project
+document.getElementById('create-project-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const projectName = document.getElementById('project-name').value;
+
+  const newProject = new Project(projectName);
+  projects.push(newProject);
+  saveProjectsToLocalStorage();
+  updateProjectSidebar(); 
+});
+
+// Handle form submission for creating tasks
 taskForm.addEventListener('submit', (event) => {
-    event.preventDefault();  // Prevent default form submission
+    event.preventDefault(); 
     
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
@@ -76,14 +185,13 @@ taskForm.addEventListener('submit', (event) => {
   
     // Create and add task
     const newTask = new Todo(title, description, dueDate, priority);
-    tasks.push(newTask);
-    addTaskToDOM(newTask);
-    saveTasksToLocalStorage();
+    addTaskToProject(newTask);
   
     // Close the modal and reset the form
     modal.style.display = 'none';
     taskForm.reset();
 });
   
-// Initialize with local data
-loadTasksFromLocalStorage();
+
+// Load the projects
+loadProjectsFromLocalStorage();
