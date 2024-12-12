@@ -45,11 +45,8 @@ footer a:hover {
 }
 
 /* Modal Styles */
-#task-modal {
-    display: none; 
+#project-modal, #todo-modal {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.5); 
@@ -59,7 +56,7 @@ footer a:hover {
     padding: 20px;
 }
 
-#task-modal form {
+#project-modal form, #todo-modal form {
     background-color: white;
     padding: 20px;
     border-radius: 8px;

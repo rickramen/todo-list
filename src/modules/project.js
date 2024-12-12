@@ -1,21 +1,23 @@
+// project.js
+
 export default class Project {
     constructor(name) {
         this.name = name;
-        this.tasks = []; 
+        this.todos = []; 
     }
 
-    addTask(task) {
-        this.tasks.push(task);
+    addTodo(todo) {
+        this.todos.push(todo);
     }
 
-    removeTask(task) {
-        const index = this.tasks.indexOf(task);
+    removeTodo(todo) {
+        const index = this.todos.indexOf(todo);
         if (index > -1) {
-            this.tasks.splice(index, 1);
+            this.todos.splice(index, 1);
         }
     }
 
-    getTasks() {
-        return this.tasks;
+    getTodos() {
+        return this.todos;
     }
 }

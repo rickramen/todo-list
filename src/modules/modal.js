@@ -1,25 +1,43 @@
+// modal.js
+
+const projectModal = document.getElementById('project-modal');
+const todoModal = document.getElementById('todo-modal');
+const addProjectButton = document.getElementById('add-project-btn');
+const closeProjectModalButton = document.getElementById('close-project-modal-btn');
 const addTodoButton = document.getElementById('add-todo-btn');
-const modal = document.getElementById('task-modal');         
-const closeModalButton = document.getElementById('close-modal-btn'); 
+const closetodoModalButton = document.getElementById('close-todo-modal-btn');
 
+function showModal(modal) {
+  modal.style.display = 'block';
+}
 
-//===============================================
-// Event listeners
-//===============================================
+function hideModal(modal) {
+  modal.style.display = 'none';
+}
 
-// Show the modal
-addTodoButton.addEventListener('click', () => {
-  modal.style.display = 'block'; 
-});
+function addOutsideClickListener(modal) {
+  window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      hideModal(modal);
+    }
+  });
+}
 
-// Hide the modal
-closeModalButton.addEventListener('click', () => {
-  modal.style.display = 'none'; 
-});
+// Modal Event Listeners
+addProjectButton.addEventListener('click', () => showModal(projectModal));
+closeProjectModalButton.addEventListener('click', () => hideModal(projectModal));
+addTodoButton.addEventListener('click', () => showModal(todoModal));
+closetodoModalButton.addEventListener('click', () => hideModal(todoModal));
 
-// Hide when click outside of modal window
-window.addEventListener('click', (event) => {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-  }
-});
+addOutsideClickListener(projectModal);
+addOutsideClickListener(todoModal);
+
+export {
+  showModal,
+  hideModal,
+  addOutsideClickListener,
+  addProjectButton,
+  addTodoButton,
+  projectModal,
+  todoModal,
+};
