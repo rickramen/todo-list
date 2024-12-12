@@ -45,32 +45,9 @@ function loadProjectsFromLocalStorage() {
 function updateProjectSidebar() {
   projectSidebar.innerHTML = '';
   projects.forEach(project => {
-    const projectButton = document.createElement('button');
-    projectButton.classList.add('project-button');
-    projectButton.type = 'button';
-    projectButton.textContent = project.name;
-
-    // Update the current selected project
-    projectButton.addEventListener('click', () => {
-      currentProject = project;  
-      loadTodosForProject(project);  
-      updateMainContent(currentProject); 
-    });
-    projectSidebar.appendChild(projectButton);
-
-    // Add delete button for each project
-    const deleteButton = document.createElement('button');
-    deleteButton.type = 'button';
-    deleteButton.textContent = 'Delete';
-    deleteButton.classList.add('delete-project-button');
-    deleteButton.addEventListener('click', (event) => {
-      event.stopPropagation(); 
-      deleteProject(project);  
-    });
-    projectSidebar.appendChild(deleteButton);
+    createProjectButton(project);
   });
 
-  // defaults the first project as the current
   if (!currentProject && projects.length > 0) {
     currentProject = projects[0];
     loadTodosForProject(currentProject);
@@ -81,15 +58,46 @@ function updateProjectSidebar() {
   }
 }
 
+function createProjectButton(project) {
+  const projectButton = document.createElement('button');
+  projectButton.classList.add('project-button');
+  projectButton.type = 'button';
+  projectButton.textContent = project.name;
+  projectButton.addEventListener('click', () => selectProject(project));
+  projectSidebar.appendChild(projectButton);
+
+  // Added the project delete button to the sidebar for now
+  createDeleteButton(project);
+}
+
+function createDeleteButton(project){
+  const deleteButton = document.createElement('button');
+  deleteButton.classList.add('delete-project-button');
+  deleteButton.type = 'button';
+  deleteButton.textContent = 'Delete';
+ 
+  deleteButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    deleteProject(project);
+  });
+  projectSidebar.appendChild(deleteButton);
+}
+
+function selectProject(project) {
+  currentProject = project;
+  loadTodosForProject(project);
+  updateMainContent(currentProject);
+}
+
 function updateMainContent(project) {
   currentProjectName.textContent = project.name;
 }
 
 function showCreateTodoButton(show) {
   if (show) {
-    modalUtils.addTodoButton.style.display = 'block';
+    modalUtils.showTodoButton();
   } else {
-    modalUtils.addTodoButton.style.display = 'none';
+    modalUtils.hideTodoButton();
   }
 }
 
@@ -145,7 +153,7 @@ function addTodoToProject(todo) {
   if (currentProject) {
     currentProject.addTodo(todo);
     saveProjectsToLocalStorage();
-    loadTodosForProject(currentProject);  // Refresh the todo list
+    loadTodosForProject(currentProject); 
   }
 }
 
@@ -167,8 +175,8 @@ function removeTodoFromProject(todo) {
 // Handle form submission for creating project
 projectForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const projectName = document.getElementById('project-name').value;
 
+  const projectName = document.getElementById('project-name').value;
   const newProject = new Project(projectName);
   projects.push(newProject);
   saveProjectsToLocalStorage();
@@ -181,12 +189,11 @@ projectForm.addEventListener('submit', (event) => {
 // Handle form submission for creating todos
 todoForm.addEventListener('submit', (event) => {
     event.preventDefault(); 
-    
+
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const dueDate = document.getElementById('due-date').value;
     const priority = document.getElementById('priority').value;
-  
     const newTodo = new Todo(title, description, dueDate, priority);
     addTodoToProject(newTodo);
   

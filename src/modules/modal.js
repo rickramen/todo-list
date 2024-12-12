@@ -1,10 +1,10 @@
 // modal.js
 
+const addProjectButton = document.getElementById('add-project-btn');
+const addTodoButton = document.getElementById('add-todo-btn');
 const projectModal = document.getElementById('project-modal');
 const todoModal = document.getElementById('todo-modal');
-const addProjectButton = document.getElementById('add-project-btn');
 const closeProjectModalButton = document.getElementById('close-project-modal-btn');
-const addTodoButton = document.getElementById('add-todo-btn');
 const closetodoModalButton = document.getElementById('close-todo-modal-btn');
 
 function showModal(modal) {
@@ -23,6 +23,14 @@ function addOutsideClickListener(modal) {
   });
 }
 
+function showTodoButton() {
+  addTodoButton.style.display = 'block';
+}
+
+function hideTodoButton() {
+  addTodoButton.style.display = 'none';
+}
+
 // Modal Event Listeners
 addProjectButton.addEventListener('click', () => showModal(projectModal));
 closeProjectModalButton.addEventListener('click', () => hideModal(projectModal));
@@ -36,8 +44,9 @@ export {
   showModal,
   hideModal,
   addOutsideClickListener,
-  addProjectButton,
   addTodoButton,
+  showTodoButton,
+  hideTodoButton,
   projectModal,
   todoModal,
 };
