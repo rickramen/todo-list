@@ -61,7 +61,7 @@ footer a:hover {
     overflow-y: auto;
 }
 
-#project-list-container {
+#project-container {
     display: flex;
     flex-direction: column;
 }
@@ -134,4 +134,54 @@ footer a:hover {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+/* Todo List Styles */
+#todo-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Todo Item Layout */
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative; 
+}
+
+.todo-content {
+    display: flex;
+    gap: 20px; 
+}
+
+.todo-title {
+    font-weight: bold;
+}
+
+.todo-priority,
+.todo-due-date,
+.todo-description {
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Delete Button Styling */
+.todo-delete-btn {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.todo-delete-btn:hover {
+    background-color: #ff4a4a;
 }

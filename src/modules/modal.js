@@ -31,6 +31,23 @@ function hideTodoButton() {
   addTodoButton.style.display = 'none';
 }
 
+function openEditModal(todo) {
+  document.getElementById('title').value = todo.title;
+  document.getElementById('description').value = todo.description;
+  document.getElementById('due-date').value = todo.getFormattedDueDate();
+  document.getElementById('priority').value = todo.priority;
+
+  const saveButton = todoModal.querySelector('button[type="submit"]');
+  saveButton.onclick = (event) => {
+      event.preventDefault(); 
+      updateTodoInProject(todo); 
+      hideModal(todoModal);  
+  };
+
+  // Open the modal to edit the todo
+  showModal(todoModal);
+}
+
 // Modal Event Listeners
 addProjectButton.addEventListener('click', () => showModal(projectModal));
 closeProjectModalButton.addEventListener('click', () => hideModal(projectModal));
@@ -47,6 +64,7 @@ export {
   addTodoButton,
   showTodoButton,
   hideTodoButton,
+  openEditModal,
   projectModal,
   todoModal,
 };

@@ -8,8 +8,8 @@ import * as modalUtils from './modules/modal';
 const todoForm = document.getElementById('todo-form');
 const todoList = document.getElementById('todo-list');
 const projectForm = document.getElementById('project-form');
-const projectListContainer = document.getElementById('project-list-container');
-const mainContent = document.getElementById('main-content');
+const projectContainer = document.getElementById('project-container');
+const todoContainer = document.getElementById('todo-container');
 const currentProjectName = document.getElementById('current-project-name');
 
 let projects = [];
@@ -49,16 +49,17 @@ function loadProjectsFromLocalStorage() {
 }
 
 function updateProjectSidebar() {
-    projectListContainer.innerHTML = '';
+    projectContainer.innerHTML = '';
     
     projects.forEach(project => {
-        createProjectButton(project);
+        addProjectButton(project);
     });
 
-    // Hide when no projects
+    // Hide create Todo btn when no projects
     if (projects.length === 0) {
         showCreateTodoButton(false); // No projects left, hide the button
     } else {
+        // Default the current project to first one
         if (!currentProject) {
             currentProject = projects[0]; 
             loadTodosForProject(currentProject);
@@ -68,18 +69,19 @@ function updateProjectSidebar() {
     }
 }
 
-function createProjectButton(project) {
+// Adds project to sidebar
+function addProjectButton(project) {
     const projectButton = document.createElement('button');
     projectButton.classList.add('project-button');
     projectButton.type = 'button';
     projectButton.textContent = project.name;
     
     projectButton.addEventListener('click', () => selectProject(project));
-    projectListContainer.appendChild(projectButton);
+    projectContainer.appendChild(projectButton);
 }
 
-function createDeleteButton(project) {
-    const existingDeleteButton = mainContent.querySelector('.delete-project-button');
+function addDeleteProjectButton(project) {
+    const existingDeleteButton = todoContainer.querySelector('.delete-project-button');
     
     if (existingDeleteButton) {
         existingDeleteButton.remove();
@@ -88,14 +90,14 @@ function createDeleteButton(project) {
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-project-button');
     deleteButton.type = 'button';
-    deleteButton.textContent = 'Delete';
+    deleteButton.textContent = 'Delete Project';
  
     deleteButton.addEventListener('click', (event) => {
         event.stopPropagation();
         deleteProject(project);
     });
     
-    mainContent.appendChild(deleteButton);
+    todoContainer.appendChild(deleteButton);
 }
 
 function selectProject(project) {
@@ -106,7 +108,7 @@ function selectProject(project) {
 
 function updateMainContent(project) {
     currentProjectName.textContent = project.name;
-    createDeleteButton(project); 
+    addDeleteProjectButton(project); 
 }
 
 function showCreateTodoButton(show) {
@@ -121,7 +123,7 @@ function deleteProject(projectToDelete) {
     projects = projects.filter(project => project !== projectToDelete);
   
     if (currentProject === projectToDelete) {
-        // If there are no projects left, set currentProject to null
+        // If there are no projects, set currentProject to null
         currentProject = projects[0] || null; 
         
         if (currentProject) {
@@ -144,14 +146,22 @@ function addTodoToDOM(todo) {
   
     todoItem.innerHTML = `
         <div>
-            <strong>${todo.title}</strong>
-            <p>${todo.description}</p>
-            <p>Due: ${todo.getFormattedDueDate()}</p>
-            <p>Priority: ${todo.priority}</p>
+            <span class="todo-title">${todo.title}</span>
+            <span class="todo-due-date">Due: ${todo.getFormattedDueDate()}</span>
+            <span class="todo-priority">Priority: ${todo.priority}</span>
         </div>
     `;
 
-    // Add delete button to todos
+    // Add Edit button
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Details';
+    editButton.type = 'button';
+    
+    editButton.addEventListener('click', () => {
+       modalUtils.openEditModal(todo);  
+    });
+
+    // Add Delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.type = 'button';
@@ -160,9 +170,32 @@ function addTodoToDOM(todo) {
         todoItem.remove(); 
         removeTodoFromProject(todo); 
     });
-  
+
+    todoItem.appendChild(editButton);
     todoItem.appendChild(deleteButton);
     todoList.appendChild(todoItem);
+}
+
+// Update an existing todo in the current project
+function updateTodoInProject(todo) {
+    const updatedTitle = document.getElementById('title').value;
+    const updatedDescription = document.getElementById('description').value;
+    const updatedDueDate = document.getElementById('due-date').value;
+    const updatedPriority = document.getElementById('priority').value;
+    
+    // Update the todo's properties
+    todo.updateTodo({
+        title: updatedTitle,
+        description: updatedDescription,
+        dueDate: updatedDueDate,
+        priority: updatedPriority
+    });
+
+    // Save changes to localStorage
+    saveProjectsToLocalStorage(); 
+
+    // Reload todos for the current project
+    loadTodosForProject(currentProject);  
 }
 
 function addTodoToProject(todo) {

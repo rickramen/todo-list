@@ -14,19 +14,21 @@
     </header>
 
     <div id="project-sidebar">
+        <button type="button" id="add-project-btn">Create Project</button>
         <div id="project-header">
             <h2 id="project-title">My Projects</h2>
         </div>
-        <div id="project-list-container">
+        <div id="project-container">
             <ul id="project-list"></ul>
         </div>
     </div>
 
     <div id="main-content">
-        <button type="button" id="add-project-btn">Create Project</button>
         <h2 id="current-project-name"></h2>
         <button type="button" id="add-todo-btn" style="display: none;">Create Todo</button>
-        <ul id="todo-list"></ul>
+        <div id="todo-container">
+            <ul id="todo-list"></ul>
+        </div>
     </div>
 
     <div id="project-modal" style="display: none;">
