@@ -1,14 +1,14 @@
 // modal.js
 
 const addProjectButton = document.getElementById('add-project-btn');
-const addTodoButton = document.getElementById('add-todo-btn');
 const projectModal = document.getElementById('project-modal');
-const todoModal = document.getElementById('todo-modal');
 const closeProjectModalButton = document.getElementById('close-project-modal-btn');
+const addTodoButton = document.getElementById('add-todo-btn');
+const todoModal = document.getElementById('todo-modal');
 const closetodoModalButton = document.getElementById('close-todo-modal-btn');
 
 function showModal(modal) {
-  modal.style.display = 'block';
+  modal.style.display = 'flex';
 }
 
 function hideModal(modal) {

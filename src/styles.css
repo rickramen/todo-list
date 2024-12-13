@@ -1,31 +1,38 @@
-/* styles.css */
-
+/* Global Layout */
 body {
-    font-family: 'Arial', sans-serif; 
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh; 
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Header, content area, footer */
+    grid-template-columns: 250px 1fr;  /* Sidebar and main content */
+    grid-template-areas: 
+        "header header"
+        "sidebar main"
+        "footer footer";
+    height: 100vh;
 }
 
+/* Header */
 header {
+    grid-area: header;
     background-color: beige;
     color: black;
     padding: 20px;
     text-align: center;
-  }
+}
 
+/* Footer */
 footer {
+    grid-area: footer;
     background-color: lightgrey;
     text-align: center;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px; 
+    gap: 5px;
     padding: 10px;
-    margin-top: auto;
-    display: flex;
-  }
+}
 
 footer img {
     width: 25px;
@@ -44,18 +51,56 @@ footer a:hover {
     color: #0077b6; 
 }
 
+/* Sidebar */
+#project-sidebar {
+    grid-area: sidebar;
+    background-color: #caf0f8;
+    padding: 15px;
+    border-right: 2px solid #0077b6;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+#project-list-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#project-list {
+    list-style: none; 
+    margin: 0;
+    padding: 0;
+}
+
+#project-list li {
+    margin-bottom: 10px;
+}
+
+/* Main Content */
+#main-content {
+    grid-area: main;
+    padding: 20px;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
 /* Modal Styles */
 #project-modal, #todo-modal {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.5); 
-    align-items: center;
-    justify-content: center;
+    display: flex;
+    align-items: center;  
+    justify-content: center; 
     z-index: 1000;
     padding: 20px;
+    display: none; 
 }
 
+/* Modal Content */
 #project-modal form, #todo-modal form {
     background-color: white;
     padding: 20px;
@@ -63,4 +108,30 @@ footer a:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 300px;
     max-width: 100%;
+    display: block;
+    margin-bottom: 30vh;  
+}
+
+/* Close Button */
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: #0077b6;
+    font-size: 1.2rem;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Fade Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

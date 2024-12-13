@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,19 @@
 
     <header>
         <h1>Todo List</h1>
-        <button type="button" id="add-project-btn">Create Project</button>
     </header>
 
     <div id="project-sidebar">
-        <ul id="project-list"></ul> 
+        <div id="project-header">
+            <h2 id="project-title">My Projects</h2>
+        </div>
+        <div id="project-list-container">
+            <ul id="project-list"></ul>
+        </div>
     </div>
- 
+
     <div id="main-content">
+        <button type="button" id="add-project-btn">Create Project</button>
         <h2 id="current-project-name"></h2>
         <button type="button" id="add-todo-btn" style="display: none;">Create Todo</button>
         <ul id="todo-list"></ul>
@@ -32,7 +38,7 @@
         </form>
     </div>
 
-    <div id="todo-modal" style="display: none;" >
+    <div id="todo-modal" style="display: none;">
         <h2>Create a ToDo</h2>
         <form id="todo-form">
             <label for="title">Title</label>
@@ -55,15 +61,15 @@
             <button type="button" id="close-todo-modal-btn">Close</button>
         </form>
     </div>
-    
+
     <footer>
         <a href="https://github.com/rickramen/todo-list" target="_blank">
-            <img src="./assets/github-mark.png" alt="GitHub Logo"/>
-        </a>
-        <a href="https://github.com/rickramen/todo-list" target="_blank">
+            <img src="./assets/github-mark.png" alt="GitHub Logo">
             <p>rickramen</p>
         </a>
+        
     </footer>
 
 </body>
+
 </html>
