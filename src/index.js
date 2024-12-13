@@ -4,6 +4,10 @@ import './styles.css'
 import Todo from './modules/todo';
 import Project from './modules/project';
 import * as modalUtils from './modules/modal';
+import 
+{   loadProjectsFromLocalStorage, 
+    saveProjectsToLocalStorage 
+} from './modules/localStorage';
 
 const todoForm = document.getElementById('todo-form');
 const todoList = document.getElementById('todo-list');
@@ -12,40 +16,18 @@ const projectContainer = document.getElementById('project-container');
 const todoContainer = document.getElementById('todo-container');
 const currentProjectName = document.getElementById('current-project-name');
 
-let projects = [];
 let currentProject = null;
+let projects = [];
 
-function saveProjectsToLocalStorage() {
-    localStorage.setItem('projects', JSON.stringify(projects));
-}
+function initialize() {
+    projects = loadProjectsFromLocalStorage(); 
 
-function loadProjectsFromLocalStorage() {
-    const storedProjects = localStorage.getItem('projects');
-    
-    if (storedProjects) {
-        const parsedProjects = JSON.parse(storedProjects);
-        
-        parsedProjects.forEach(projectData => {
-            const project = new Project(projectData.name);
-            
-            projectData.todos.forEach(todoData => {
-                const todo = new Todo(
-                    todoData.title,
-                    todoData.description,
-                    todoData.dueDate,
-                    todoData.priority
-                );
-                project.addTodo(todo);
-            });
-            projects.push(project);
-        });
-    } else {
-        // Create a default project if no local storage exists
-        const defaultProject = new Project('Default');
-        projects.push(defaultProject);
+    if (!projects || projects.length === 0) {
+        projects = [new Project('Default')];
+        saveProjectsToLocalStorage(projects);
     }
-    
-    updateProjectSidebar(); 
+
+    updateProjectSidebar();
 }
 
 function updateProjectSidebar() {
@@ -57,7 +39,8 @@ function updateProjectSidebar() {
 
     // Hide create Todo btn when no projects
     if (projects.length === 0) {
-        showCreateTodoButton(false); // No projects left, hide the button
+        // Hide when no projects left
+        showCreateTodoButton(false);
     } else {
         // Default the current project to first one
         if (!currentProject) {
@@ -135,7 +118,7 @@ function deleteProject(projectToDelete) {
         }
     }
 
-    saveProjectsToLocalStorage();
+    saveProjectsToLocalStorage(projects);
     updateProjectSidebar();
 }
 
@@ -154,7 +137,7 @@ function addTodoToDOM(todo) {
 
     // Add Edit button
     const editButton = document.createElement('button');
-    editButton.textContent = 'Details';
+    editButton.textContent = 'Edit';
     editButton.type = 'button';
     
     editButton.addEventListener('click', () => {
@@ -183,7 +166,7 @@ function updateTodoInProject(todo) {
     const updatedDueDate = document.getElementById('due-date').value;
     const updatedPriority = document.getElementById('priority').value;
     
-    // Update the todo's properties
+    // Update the todo details
     todo.updateTodo({
         title: updatedTitle,
         description: updatedDescription,
@@ -192,7 +175,7 @@ function updateTodoInProject(todo) {
     });
 
     // Save changes to localStorage
-    saveProjectsToLocalStorage(); 
+    saveProjectsToLocalStorage(projects); 
 
     // Reload todos for the current project
     loadTodosForProject(currentProject);  
@@ -201,7 +184,7 @@ function updateTodoInProject(todo) {
 function addTodoToProject(todo) {
     if (currentProject) {
         currentProject.addTodo(todo);
-        saveProjectsToLocalStorage();
+        saveProjectsToLocalStorage(projects);
         loadTodosForProject(currentProject); 
     }
 }
@@ -218,7 +201,7 @@ function removeTodoFromProject(todo) {
     
     if (project) {
         project.removeTodo(todo);
-        saveProjectsToLocalStorage(); 
+        saveProjectsToLocalStorage(projects); 
     }
 }
 
@@ -229,7 +212,7 @@ projectForm.addEventListener('submit', (event) => {
     const projectName = document.getElementById('project-name').value;
     const newProject = new Project(projectName);
     projects.push(newProject);
-    saveProjectsToLocalStorage();
+    saveProjectsToLocalStorage(projects);
     updateProjectSidebar(); 
 
     modalUtils.hideModal(modalUtils.projectModal);
@@ -252,5 +235,5 @@ todoForm.addEventListener('submit', (event) => {
     todoForm.reset();
 });
 
-// Load the projects
-loadProjectsFromLocalStorage();
+// Initialize the app
+initialize();

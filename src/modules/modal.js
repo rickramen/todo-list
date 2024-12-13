@@ -31,6 +31,7 @@ function hideTodoButton() {
   addTodoButton.style.display = 'none';
 }
 
+// Prefill the todo modal for editing
 function openEditModal(todo) {
   document.getElementById('title').value = todo.title;
   document.getElementById('description').value = todo.description;
@@ -60,11 +61,9 @@ addOutsideClickListener(todoModal);
 export {
   showModal,
   hideModal,
-  addOutsideClickListener,
-  addTodoButton,
   showTodoButton,
   hideTodoButton,
   openEditModal,
   projectModal,
-  todoModal,
+  todoModal
 };
