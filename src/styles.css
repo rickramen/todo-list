@@ -320,13 +320,11 @@ footer a:hover {
     margin: 5px 0; 
 }
 
-/* Hover effect */
 .project-button:hover {
     background-color: #0056b3; 
     transform: scale(1.05);  
 }
 
-/* Active effect (when clicked) */
 .project-button:active {
     background-color: #004085; 
     transform: scale(0.98); 

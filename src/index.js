@@ -87,6 +87,12 @@ function addProjectButton(project) {
 }
 
 function addDeleteProjectButton(project) {
+    const existingDeleteButton = todoContainer.querySelector('.delete-project-button');
+    
+    if (existingDeleteButton) {
+        existingDeleteButton.remove();
+    }
+
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-project-button');
     deleteButton.type = 'button';
