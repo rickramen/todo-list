@@ -26,20 +26,21 @@ function openEditModal(todo) {
   showModal(todoModal);
 }
 
+function showTodoButton() {
+  addTodoButton.style.display = 'inline-block';
+}
+
+function hideTodoButton() {
+  addTodoButton.style.display = 'none';
+}
+
+// Close modal outside the form clicked
 function addOutsideClickListener(modal) {
   window.addEventListener('click', (event) => {
     if (event.target === modal) {
       hideModal(modal);
     }
   });
-}
-
-function showTodoButton() {
-  addTodoButton.style.display = 'block';
-}
-
-function hideTodoButton() {
-  addTodoButton.style.display = 'none';
 }
 
 
@@ -49,8 +50,8 @@ addTodoButton.addEventListener('click', () => showModal(todoModal));
 closeProjectModalButton.addEventListener('click', () => hideModal(projectModal));
 closetodoModalButton.addEventListener('click', () => hideModal(todoModal)); 
 
-addOutsideClickListener(projectModal);
-addOutsideClickListener(todoModal);
+// addOutsideClickListener(projectModal);
+// addOutsideClickListener(todoModal);
 
 export {
   showModal,

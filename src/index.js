@@ -55,36 +55,6 @@ function updateProjectSidebar() {
     }
 }
 
-// Adds project to sidebar
-function addProjectButton(project) {
-    const projectButton = document.createElement('button');
-    projectButton.classList.add('project-button');
-    projectButton.type = 'button';
-    projectButton.textContent = project.name;
-    
-    projectButton.addEventListener('click', () => selectProject(project));
-    projectContainer.appendChild(projectButton);
-}
-
-function addDeleteProjectButton(project) {
-    const existingDeleteButton = todoContainer.querySelector('.delete-project-button');
-    
-    if (existingDeleteButton) {
-        existingDeleteButton.remove();
-    }
-
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('delete-project-button');
-    deleteButton.type = 'button';
-    deleteButton.textContent = 'Delete Project';
- 
-    deleteButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        deleteProject(project);
-    });
-    
-    todoContainer.appendChild(deleteButton);
-}
 
 function selectProject(project) {
     currentProject = project;
@@ -105,6 +75,31 @@ function showCreateTodoButton(show) {
     }
 }
 
+// Adds project to sidebar
+function addProjectButton(project) {
+    const projectButton = document.createElement('button');
+    projectButton.classList.add('project-button');
+    projectButton.type = 'button';
+    projectButton.textContent = project.name;
+    
+    projectButton.addEventListener('click', () => selectProject(project));
+    projectContainer.appendChild(projectButton);
+}
+
+function addDeleteProjectButton(project) {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('delete-project-button');
+    deleteButton.type = 'button';
+    deleteButton.textContent = 'Delete Project';
+ 
+    deleteButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        deleteProject(project);
+    });
+    
+    todoContainer.appendChild(deleteButton);
+}
+
 function deleteProject(projectToDelete) {
     projects = projects.filter(project => project !== projectToDelete);
   
@@ -123,6 +118,14 @@ function deleteProject(projectToDelete) {
 
     saveProjectsToLocalStorage(projects);
     updateProjectSidebar();
+
+    // Remove the delete button if no projects are left
+    if (projects.length === 0) {
+        const deleteButton = todoContainer.querySelector('.delete-project-button');
+        if (deleteButton) {
+            deleteButton.remove();  
+        }
+    }
 }
 
 // Add todo to the UI
@@ -138,28 +141,37 @@ function addTodoToDOM(todo) {
         </div>
     `;
 
+    // Create button container for Edit and Delete buttons
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('todo-buttons');
+
     // Add Edit button
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
     editButton.type = 'button';
-    
+    editButton.classList.add('todo-edit-button');  
+
     editButton.addEventListener('click', () => {
-        activeTodo = todo; 
-        modalUtils.openEditModal(todo);  
+        activeTodo = todo;
+        modalUtils.openEditModal(todo);
     });
 
     // Add Delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.type = 'button';
-    
+    deleteButton.classList.add('todo-delete-button');  
+
     deleteButton.addEventListener('click', () => {
-        todoItem.remove(); 
-        removeTodoFromProject(todo); 
+        todoItem.remove();
+        removeTodoFromProject(todo);
     });
 
-    todoItem.appendChild(editButton);
-    todoItem.appendChild(deleteButton);
+
+    buttonContainer.appendChild(editButton);
+    buttonContainer.appendChild(deleteButton);
+
+    todoItem.appendChild(buttonContainer);
     todoList.appendChild(todoItem);
 }
 
