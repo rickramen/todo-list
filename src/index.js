@@ -15,8 +15,11 @@ const projectForm = document.getElementById('project-form');
 const projectContainer = document.getElementById('project-container');
 const todoContainer = document.getElementById('todo-container');
 const currentProjectName = document.getElementById('current-project-name');
+const closeProjectModalButton = document.getElementById('close-project-modal-btn');
+const closeTodoModalButton = document.getElementById('close-todo-modal-btn');
 
 let currentProject = null;
+let activeTodo = null;
 let projects = [];
 
 function initialize() {
@@ -141,7 +144,8 @@ function addTodoToDOM(todo) {
     editButton.type = 'button';
     
     editButton.addEventListener('click', () => {
-       modalUtils.openEditModal(todo);  
+        activeTodo = todo; 
+        modalUtils.openEditModal(todo);  
     });
 
     // Add Delete button
@@ -157,28 +161,6 @@ function addTodoToDOM(todo) {
     todoItem.appendChild(editButton);
     todoItem.appendChild(deleteButton);
     todoList.appendChild(todoItem);
-}
-
-// Update an existing todo in the current project
-function updateTodoInProject(todo) {
-    const updatedTitle = document.getElementById('title').value;
-    const updatedDescription = document.getElementById('description').value;
-    const updatedDueDate = document.getElementById('due-date').value;
-    const updatedPriority = document.getElementById('priority').value;
-    
-    // Update the todo details
-    todo.updateTodo({
-        title: updatedTitle,
-        description: updatedDescription,
-        dueDate: updatedDueDate,
-        priority: updatedPriority
-    });
-
-    // Save changes to localStorage
-    saveProjectsToLocalStorage(projects); 
-
-    // Reload todos for the current project
-    loadTodosForProject(currentProject);  
 }
 
 function addTodoToProject(todo) {
@@ -219,21 +201,46 @@ projectForm.addEventListener('submit', (event) => {
     projectForm.reset();
 });
 
-// Handle form submission for creating todos
+// Handle form submission for creating or editing todos
 todoForm.addEventListener('submit', (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const dueDate = document.getElementById('due-date').value;
     const priority = document.getElementById('priority').value;
-    
-    const newTodo = new Todo(title, description, dueDate, priority);
-    addTodoToProject(newTodo);
-  
+
+    if (activeTodo) {
+        activeTodo.updateTodo({
+            title,
+            description,
+            dueDate,
+            priority
+        });
+
+        saveProjectsToLocalStorage(projects);
+        loadTodosForProject(currentProject);
+        activeTodo = null; 
+      
+    } else {
+        const newTodo = new Todo(title, description, dueDate, priority);
+        addTodoToProject(newTodo);
+    }
+
     modalUtils.hideModal(modalUtils.todoModal);
     todoForm.reset();
 });
+
+closeProjectModalButton.addEventListener('click', () => {
+    modalUtils.hideModal(modalUtils.projectModal);
+    projectForm.reset();
+  });
+  
+closeTodoModalButton.addEventListener('click', () => {
+  modalUtils.hideModal(modalUtils.todoModal);
+  todoForm.reset(); 
+});
+
 
 // Initialize the app
 initialize();
