@@ -313,10 +313,12 @@ footer a:hover {
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 12px 70px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 1.2rem;
     text-align: center; 
-    width: auto; 
+    width: 200px; 
+    max-width: 100%;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin: 5px 0; 
