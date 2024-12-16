@@ -139,19 +139,55 @@ function addTodoToDOM(todo) {
     const todoItem = document.createElement('li');
     todoItem.classList.add('todo-item');
   
-    todoItem.innerHTML = `
-        <div>
-            <span class="todo-title">${todo.title}</span>
-            <span class="todo-due-date">Due: ${todo.getFormattedDueDate()}</span>
-            <span class="todo-priority">Priority: ${todo.priority}</span>
-        </div>
-    `;
+    // Create left side todo container
+    const todoLeftContainer = document.createElement('div');
+    todoLeftContainer.classList.add('todo-left-container');
 
-    // Create button container for Edit and Delete buttons
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('todo-checkbox');
+    checkbox.checked = todo.completed;
+
+    // Toggle completed state when clicked
+    checkbox.addEventListener('click', () => {
+        todo.toggleComplete();
+        updateTodoCompletion(todo, todoItem); 
+        saveProjectsToLocalStorage(projects);
+    });
+
+    // Todo title
+    const todoTitle = document.createElement('span');
+    todoTitle.classList.add('todo-title');
+    todoTitle.textContent = todo.title;
+
+    todoLeftContainer.appendChild(checkbox);
+    todoLeftContainer.appendChild(todoTitle);
+    todoItem.appendChild(todoLeftContainer);
+
+    // Create right side of todo (details + buttons)
+    const todoRightContainer = document.createElement('div');
+    todoRightContainer.classList.add('todo-right-container');
+
+    // Create container for the todo details
+    const todoDetails = document.createElement('div');
+    todoDetails.classList.add('todo-details');
+
+    const todoDueDate = document.createElement('span');
+    todoDueDate.classList.add('todo-due-date');
+    todoDueDate.textContent = `Due: ${todo.getFormattedDueDate()}`;  // Assuming `getFormattedDueDate()` returns a string
+
+    const todoPriority = document.createElement('span');
+    todoPriority.classList.add('todo-priority');
+    todoPriority.textContent = `Priority: ${todo.priority}`;
+
+    todoDetails.appendChild(todoDueDate);
+    todoDetails.appendChild(todoPriority);
+    todoRightContainer.appendChild(todoDetails);
+
+
     const buttonContainer = document.createElement('div');
     buttonContainer.classList.add('todo-buttons');
 
-    // Add Edit button
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
     editButton.type = 'button';
@@ -173,11 +209,11 @@ function addTodoToDOM(todo) {
         removeTodoFromProject(todo);
     });
 
-
     buttonContainer.appendChild(editButton);
     buttonContainer.appendChild(deleteButton);
 
-    todoItem.appendChild(buttonContainer);
+    todoRightContainer.appendChild(buttonContainer);
+    todoItem.appendChild(todoRightContainer);
     todoList.appendChild(todoItem);
 }
 
@@ -204,6 +240,19 @@ function removeTodoFromProject(todo) {
         saveProjectsToLocalStorage(projects); 
     }
 }
+
+function updateTodoCompletion(todo, todoItem) {
+    const todoTitle = todoItem.querySelector('.todo-title');
+    
+    if (todo.completed) {
+        todoTitle.style.textDecoration = 'line-through'; 
+        todoItem.classList.add('completed'); 
+    } else {
+        todoTitle.style.textDecoration = 'none'; 
+        todoItem.classList.remove('completed');
+    }
+}
+
 
 // Handle form submission for creating project
 projectForm.addEventListener('submit', (event) => {

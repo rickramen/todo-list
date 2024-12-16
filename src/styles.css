@@ -65,6 +65,10 @@ footer a:hover {
     border-right: 2px solid #1976d2;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
 }
 
 #project-container {
@@ -85,12 +89,239 @@ footer a:hover {
 /* Main Content */
 #main-content {
     grid-area: main;
-    padding: 30px;
+    padding: 50px;
     background-color: #ffffff;
     overflow-y: auto;
     border-radius: 8px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 }
+
+/* Todo List Styles */
+#todo-list {
+    list-style: none;
+    margin: 0;                
+    padding: 0;               
+    padding-top: 20px;       
+    padding-bottom: 20px; 
+}
+
+/* Todo Item Layout */
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.todo-item:hover {
+    background-color: #e3f2fd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.todo-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.todo-item input[type="checkbox"] {
+    margin-right: 30px; 
+}
+
+.todo-item.completed {
+    background-color: #dcedc8; 
+}
+
+.todo-title {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #0d47a1;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.todo-priority,
+.todo-due-date,
+.todo-description {
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Right section of todo list  */
+.todo-right-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px; 
+    align-items: center; 
+}
+
+/* Container for todo details  */
+.todo-details {
+    display: flex;
+    flex-direction: row; 
+    gap: 10px;
+    align-items: center;
+}
+
+/* Button container for Edit/Delete buttons */
+.todo-buttons {
+    display: flex;
+    flex-direction: row; 
+    gap: 10px; 
+}
+
+/* Edit and Delete Buttons */
+.todo-edit-button,
+.todo-delete-button {
+    width: 120px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* Edit Button Styling */
+.todo-edit-button {
+    background-color: #2274f0;
+    color: white;
+    border: none;
+}
+
+.todo-edit-button:hover {
+    background-color: #175dc7;
+}
+
+.todo-edit-button:active {
+    background-color: #114eaa;
+}
+
+/* Delete Button Styling */
+.todo-delete-button {
+    background-color: #f44336; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.todo-delete-button:hover {
+    background-color: #d32f2f;
+}
+
+.todo-delete-button:active {
+    background-color: #b71c1c ;
+}
+
+/* Create Todo Button */
+#add-todo-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;            
+    max-width: 200px;    
+    margin-top: 20px;    
+    margin-bottom: 10px; 
+}
+
+#add-todo-btn:hover {
+    background-color: #388e3c;
+}
+
+#add-todo-btn:active {
+    background-color: #2c6b2b;
+}
+
+/* Create Project Button */
+#add-project-btn {
+    background-color: #0d47a1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;  
+    max-width: 200px; 
+}
+
+#add-project-btn:hover {
+    background-color: #1565c0;
+}
+
+#add-project-btn:active {
+    background-color: #0d47a1;
+}
+
+/* Delete Project Button */
+.delete-project-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;   
+    text-align: center;
+    width: 100%;             
+    max-width: 200px;     
+}
+
+.delete-project-button:hover {
+    background-color: #d32f2f;
+}
+
+.delete-project-button:active {
+    background-color: #b71c1c;
+}
+
+/* Project button styles */
+.project-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 70px;
+    font-size: 1.2rem;
+    text-align: center; 
+    width: auto; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 5px 0; 
+}
+
+.project-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.project-button:active {
+    background-color: #004085;
+    transform: scale(0.98);
+}
+
 
 /* Modal Styles */
 #project-modal, #todo-modal {
@@ -120,8 +351,88 @@ footer a:hover {
     animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Form Heading */
+#project-modal h2, #todo-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #0d47a1;
+    text-align: center;
+}
+
+/* Label Styling */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Input and Text Styles */
+input[type="text"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+    border-color: #0d47a1;
+    background-color: #e3f2fd;
+    outline: none;
+}
+
+/* Textarea Styles */
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Button Styling */
+#project-modal button[type="submit"],
+#todo-modal button[type="submit"],
+#project-modal button[type="button"],
+#todo-modal button[type="button"] {
+    background-color: #0d47a1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#project-modal button[type="submit"]:hover,
+#todo-modal button[type="submit"]:hover,
+#project-modal button[type="button"]:hover,
+#todo-modal button[type="button"]:hover {
+    background-color: #175dc7;
+}
+
+#project-modal button[type="submit"]:active,
+#todo-modal button[type="submit"]:active,
+#project-modal button[type="button"]:active,
+#todo-modal button[type="button"]:active {
+    background-color: #114eaa;
+}
+
 /* Close Button */
-.modal-close-btn {
+#project-modal .modal-close-btn,
+#todo-modal .modal-close-btn {
     background: none;
     border: none;
     color: #0d47a1;
@@ -133,11 +444,7 @@ footer a:hover {
     transition: color 0.3s ease;
 }
 
-.modal-close-btn:hover {
-    color: #ffeb3b;
-}
-
-/* Fade Animation */
+/* Modal Fade Animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -148,185 +455,3 @@ footer a:hover {
         transform: scale(1);
     }
 }
-
-/* Todo List Styles */
-#todo-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/* Todo Item Layout */
-.todo-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.todo-item:hover {
-    background-color: #e3f2fd;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.todo-content {
-    display: flex;
-    gap: 20px;
-    flex: 1;
-}
-
-.todo-title {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #0d47a1;
-}
-
-.todo-priority,
-.todo-due-date,
-.todo-description {
-    font-size: 0.9em;
-    color: #555;
-}
-
-/* Edit and Delete Buttons */
-.todo-buttons {
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-left: 10px;
-}
-
-/* Edit button styling */
-.todo-edit-button {
-    background-color: #2274f0;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 16px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.todo-edit-button:hover {
-    background-color: #175dc7;;
-}
-
-.todo-edit-button:active {
-    background-color: #114eaa;;
-}
-
-/* Delete button styling */
-.todo-delete-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 16px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.todo-delete-button:hover {
-    background-color: #d32f2f;
-}
-
-.todo-delete-button:active {
-    background-color: #b71c1c;
-}
-
-/* Create Todo Button */
-#add-todo-btn {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 12px 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: none; 
-}
-
-#add-todo-btn:hover {
-    background-color: #388e3c;
-}
-
-#add-todo-btn:active {
-    background-color: #2c6b2b;
-}
-
-/* Create Project Button */
-#add-project-btn {
-    background-color: #0d47a1;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 12px 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 20px;
-}
-
-#add-project-btn:hover {
-    background-color: #1565c0;
-}
-
-#add-project-btn:active {
-    background-color: #0d47a1;
-}
-
-
-/* Delete Project Button */
-.delete-project-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.delete-project-button:hover {
-    background-color: #d32f2f;
-}
-
-/* Project button styles */
-.project-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    text-align: left;
-    width: 100%; 
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin: 5px 0; 
-}
-
-.project-button:hover {
-    background-color: #0056b3; 
-    transform: scale(1.05);  
-}
-
-.project-button:active {
-    background-color: #004085; 
-    transform: scale(0.98); 
-}
-
