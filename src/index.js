@@ -4,6 +4,7 @@ import './styles.css'
 import Todo from './modules/todo';
 import Project from './modules/project';
 import * as modalUtils from './modules/modal';
+import { format } from 'date-fns';
 import 
 {   loadProjectsFromLocalStorage, 
     saveProjectsToLocalStorage 
@@ -17,6 +18,10 @@ const todoContainer = document.getElementById('todo-container');
 const currentProjectName = document.getElementById('current-project-name');
 const closeProjectModalButton = document.getElementById('close-project-modal-btn');
 const closeTodoModalButton = document.getElementById('close-todo-modal-btn');
+
+const today = new Date();
+const formattedDate = format(today, 'yyyy-MM-dd');
+document.getElementById('due-date').setAttribute('min', formattedDate);
 
 let currentProject = null;
 let activeTodo = null;
@@ -174,11 +179,24 @@ function addTodoToDOM(todo) {
 
     const todoDueDate = document.createElement('span');
     todoDueDate.classList.add('todo-due-date');
-    todoDueDate.textContent = `Due: ${todo.getFormattedDueDate()}`;  // Assuming `getFormattedDueDate()` returns a string
+    todoDueDate.textContent = `Due: ${todo.getFormattedDueDate()}`;  
 
     const todoPriority = document.createElement('span');
     todoPriority.classList.add('todo-priority');
-    todoPriority.textContent = `Priority: ${todo.priority}`;
+   
+    const normalizedPriority = todo.priority.trim().toLowerCase();  
+
+    let displayPriority = normalizedPriority.charAt(0).toUpperCase() + normalizedPriority.slice(1);  
+
+    // Apply color based on priority
+    if (normalizedPriority === 'low') {
+        todoPriority.style.color = 'green';
+    } else if (normalizedPriority === 'medium') {
+        todoPriority.style.color = 'yellow';
+    } else if (normalizedPriority === 'high') {
+        todoPriority.style.color = 'red';
+    }
+    todoPriority.textContent = `${displayPriority} Priority`;
 
     todoDetails.appendChild(todoDueDate);
     todoDetails.appendChild(todoPriority);
@@ -189,7 +207,7 @@ function addTodoToDOM(todo) {
     buttonContainer.classList.add('todo-buttons');
 
     const editButton = document.createElement('button');
-    editButton.textContent = 'Edit';
+    editButton.textContent = 'Edit / View';
     editButton.type = 'button';
     editButton.classList.add('todo-edit-button');  
 
