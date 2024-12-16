@@ -192,7 +192,7 @@ function addTodoToDOM(todo) {
     if (normalizedPriority === 'low') {
         todoPriority.style.color = 'green';
     } else if (normalizedPriority === 'medium') {
-        todoPriority.style.color = 'yellow';
+        todoPriority.style.color = 'orange';
     } else if (normalizedPriority === 'high') {
         todoPriority.style.color = 'red';
     }
