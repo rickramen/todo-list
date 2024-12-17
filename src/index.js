@@ -63,7 +63,6 @@ function selectProject(project) {
     currentProject = project;
     loadTodosForProject(project);
     updateMainContent(currentProject);
-    reapplyCompletionState(project);
 }
 
 function updateMainContent(project) {
@@ -273,16 +272,6 @@ function updateTodoCompletion(todo, todoItem) {
         todoItem.classList.remove('completed');
     }
 }
-
-function reapplyCompletionState(project) {
-    project.getTodos().forEach(todo => {
-        const todoItem = document.querySelector(`.todo-item[data-todo-id="${todo.id}"]`);
-        if (todoItem) {
-            updateTodoCompletion(todo, todoItem);  
-        }
-    });
-}
-
 
 // Handle form submission for creating project
 projectForm.addEventListener('submit', (event) => {
