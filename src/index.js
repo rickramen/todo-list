@@ -29,7 +29,6 @@ let projects = [];
 
 function initialize() {
     projects = loadProjectsFromLocalStorage(); 
-
     if (!projects || projects.length === 0) {
         projects = [new Project('Default')];
         saveProjectsToLocalStorage(projects);
@@ -60,11 +59,11 @@ function updateProjectSidebar() {
     }
 }
 
-
 function selectProject(project) {
     currentProject = project;
     loadTodosForProject(project);
     updateMainContent(currentProject);
+    reapplyCompletionState(project);
 }
 
 function updateMainContent(project) {
@@ -113,7 +112,6 @@ function addDeleteProjectButton(project) {
 
 function deleteProject(projectToDelete) {
     projects = projects.filter(project => project !== projectToDelete);
-  
     if (currentProject === projectToDelete) {
         // If there are no projects, set currentProject to null
         currentProject = projects[0] || null; 
@@ -143,7 +141,8 @@ function deleteProject(projectToDelete) {
 function addTodoToDOM(todo) {
     const todoItem = document.createElement('li');
     todoItem.classList.add('todo-item');
-  
+    todoItem.setAttribute('data-todo-id', todo.id);  // Add unique ID for each todo
+
     // Create left side todo container
     const todoLeftContainer = document.createElement('div');
     todoLeftContainer.classList.add('todo-left-container');
@@ -152,6 +151,7 @@ function addTodoToDOM(todo) {
     checkbox.type = 'checkbox';
     checkbox.classList.add('todo-checkbox');
     checkbox.checked = todo.completed;
+    checkbox.id = `todo-checkbox-${todo.id}`;  
 
     // Toggle completed state when clicked
     checkbox.addEventListener('click', () => {
@@ -202,7 +202,6 @@ function addTodoToDOM(todo) {
     todoDetails.appendChild(todoPriority);
     todoRightContainer.appendChild(todoDetails);
 
-
     const buttonContainer = document.createElement('div');
     buttonContainer.classList.add('todo-buttons');
 
@@ -216,14 +215,12 @@ function addTodoToDOM(todo) {
         modalUtils.openEditModal(todo);
     });
 
-    // Add Delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.type = 'button';
     deleteButton.classList.add('todo-delete-button');  
 
     deleteButton.addEventListener('click', () => {
-        todoItem.remove();
         removeTodoFromProject(todo);
     });
 
@@ -233,7 +230,10 @@ function addTodoToDOM(todo) {
     todoRightContainer.appendChild(buttonContainer);
     todoItem.appendChild(todoRightContainer);
     todoList.appendChild(todoItem);
+
+    return todoItem;
 }
+
 
 function addTodoToProject(todo) {
     if (currentProject) {
@@ -246,18 +246,21 @@ function addTodoToProject(todo) {
 function loadTodosForProject(project) {
     todoList.innerHTML = '';
     project.getTodos().forEach(todo => {
-        addTodoToDOM(todo); 
+        const todoItem = addTodoToDOM(todo);  
+        updateTodoCompletion(todo, todoItem);
     });
 }
 
 function removeTodoFromProject(todo) {
-    const project = projects.find(p => p.name === todo.project);
-    
+    const project = projects.find(p => p.name === todo.project); 
+       
     if (project) {
         project.removeTodo(todo);
-        saveProjectsToLocalStorage(projects); 
+        saveProjectsToLocalStorage(projects);
+        loadTodosForProject(currentProject);
     }
 }
+
 
 function updateTodoCompletion(todo, todoItem) {
     const todoTitle = todoItem.querySelector('.todo-title');
@@ -271,12 +274,21 @@ function updateTodoCompletion(todo, todoItem) {
     }
 }
 
+function reapplyCompletionState(project) {
+    project.getTodos().forEach(todo => {
+        const todoItem = document.querySelector(`.todo-item[data-todo-id="${todo.id}"]`);
+        if (todoItem) {
+            updateTodoCompletion(todo, todoItem);  
+        }
+    });
+}
+
 
 // Handle form submission for creating project
 projectForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const projectName = document.getElementById('project-name').value;
+    const projectName = document.getElementById('project-name-input').value;
     const newProject = new Project(projectName);
     projects.push(newProject);
     saveProjectsToLocalStorage(projects);
@@ -290,8 +302,8 @@ projectForm.addEventListener('submit', (event) => {
 todoForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
+    const title = document.getElementById('todo-title-input').value;
+    const description = document.getElementById('todo-description-input').value;
     const dueDate = document.getElementById('due-date').value;
     const priority = document.getElementById('priority').value;
 
@@ -308,7 +320,7 @@ todoForm.addEventListener('submit', (event) => {
         activeTodo = null; 
       
     } else {
-        const newTodo = new Todo(title, description, dueDate, priority);
+        const newTodo = new Todo(title, description, dueDate, priority, currentProject.name);
         addTodoToProject(newTodo);
     }
 

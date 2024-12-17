@@ -3,13 +3,13 @@
 import { parseISO, isBefore, format } from 'date-fns';
 
 export default class Todo {
-    constructor(title, description, dueDate, priority, project) {
+    constructor(title, description, dueDate, priority, project){
       this.title = title; 
       this.description = description; 
       this.dueDate = parseISO(dueDate); 
       this.priority = priority; 
-      this.project = project;
       this.completed = false;
+      this.project = project;
     }
   
     updateTodo({ title, description, dueDate, priority }) {

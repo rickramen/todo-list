@@ -26,13 +26,17 @@ export function loadProjectsFromLocalStorage() {
                     todoData.title,
                     todoData.description,
                     todoData.dueDate,
-                    todoData.priority
+                    todoData.priority,
+                    todoData.project
                 );
+                todo.completed = todoData.completed || false;  
                 project.addTodo(todo);
             });
+
             projects.push(project);
         });
     } 
 
     return projects;
 }
+

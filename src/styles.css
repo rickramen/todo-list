@@ -98,7 +98,6 @@ footer a:hover {
     flex-direction: column;
 }
 
-
 #current-project-name {
     font-size: 36px; 
     font-weight: bold; 
@@ -379,12 +378,10 @@ label {
     color: #333;
 }
 
-/* Input and Text Styles */
-input[type="text"],
-input[type="date"],
-textarea {
+/* Project Modal Inputs */
+#project-name-input {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -395,65 +392,102 @@ textarea {
     transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-input[type="text"]:focus,
-input[type="date"]:focus,
-textarea:focus {
+#project-name-input:focus {
     border-color: #0d47a1;
     background-color: #e3f2fd;
     outline: none;
 }
 
-/* Textarea Styles */
-textarea {
-    resize: vertical;
-    min-height: 100px;
+/* Todo Modal Inputs */
+#todo-title-input,
+#todo-description-input,
+#due-date,
+#priority {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Button Styling */
-#project-modal button[type="submit"],
-#todo-modal button[type="submit"],
-#project-modal button[type="button"],
-#todo-modal button[type="button"] {
+#todo-title-input:focus,
+#todo-description-input:focus,
+#due-date:focus,
+#priority:focus {
+    border-color: #0d47a1;
+    background-color: #e3f2fd;
+    outline: none;
+}
+
+/* Select Dropdown for Priority */
+#priority {
+    appearance: none; 
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23000000" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat;
+    background-position: right 10px center;
+    background-size: 15px;
+    cursor: pointer;
+    padding-right: 35px; 
+}
+
+/* Submit and Close Buttons */
+#project-form button[type="submit"],
+#project-form button[type="button"],
+#todo-form button[type="submit"],
+#todo-form button[type="button"] {
     background-color: #0d47a1;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 12px 20px;
+    padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-right: 10px;
 }
 
-#project-modal button[type="submit"]:hover,
-#todo-modal button[type="submit"]:hover,
-#project-modal button[type="button"]:hover,
-#todo-modal button[type="button"]:hover {
+#project-form button[type="submit"]:hover,
+#todo-form button[type="submit"]:hover {
     background-color: #175dc7;
 }
 
-#project-modal button[type="submit"]:active,
-#todo-modal button[type="submit"]:active,
-#project-modal button[type="button"]:active,
-#todo-modal button[type="button"]:active {
-    background-color: #114eaa;
+#project-form button[type="button"]:hover,
+#todo-form button[type="button"]:hover {
+    background-color: #d32f2f;
 }
 
-/* Close Button */
-#project-modal .modal-close-btn,
-#todo-modal .modal-close-btn {
-    background: none;
-    border: none;
-    color: #0d47a1;
-    font-size: 1.5rem;
-    cursor: pointer;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    transition: color 0.3s ease;
+#close-project-modal-btn,
+#close-todo-modal-btn {
+    background-color: #f44336;
 }
+
+#close-project-modal-btn:hover,
+#close-todo-modal-btn:hover {
+    background-color: #d32f2f;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center; 
+    gap: 10px;  
+    margin-top: 20px;  
+}
+
+
+.modal-buttons button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 
 /* Modal Fade Animation */
 @keyframes fadeIn {
